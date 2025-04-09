@@ -30,6 +30,20 @@ RSpec.describe "Users", type: :request do
       end
     end
 
+    context 'when filter by username' do
+      include_context 'with multiple companies'
+
+      let!(:user_andre) { create(:user, username: 'andre_01', company: company_1) }
+
+      it 'returns only the users for the partial username' do
+
+        get "/users?username=andre_01"
+        
+        expect(result.size).to eq(1)
+        expect(result[0]['username']).to eq(user_andre.username)
+      end
+    end
+
     context 'when fetching all users' do
       include_context 'with multiple companies'
 
